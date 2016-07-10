@@ -20,6 +20,7 @@
 		6B6AA5271D281577001D9703 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6AA5261D281577001D9703 /* UIImageView.swift */; };
 		6B6AA52A1D282AD9001D9703 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6AA5291D282AD9001D9703 /* UIColor.swift */; };
 		CC02BBE5F15164B747E6BBB8 /* Pods_MovieViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A99C447AAF84FF8BDFEFC8 /* Pods_MovieViewer.framework */; };
+		EB56637F1D31EB8600EAE70C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +40,7 @@
 		6B6AA5291D282AD9001D9703 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		A22340D3199F1124145581D8 /* Pods-MovieViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.release.xcconfig"; sourceTree = "<group>"; };
 		E4A99C447AAF84FF8BDFEFC8 /* Pods_MovieViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		EE51B5A77DF7A2835CFE8CD1 /* Pods-MovieViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,6 +96,7 @@
 			children = (
 				6B56C2A91D250AF9004A84F9 /* MoviesViewController.swift */,
 				6B56C2AD1D2565EE004A84F9 /* MovieDetailViewController.swift */,
+				EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				6B6AA5271D281577001D9703 /* UIImageView.swift in Sources */,
 				6B56C2AE1D2565EE004A84F9 /* MovieDetailViewController.swift in Sources */,
 				6B56C2951D250181004A84F9 /* AppDelegate.swift in Sources */,
+				EB56637F1D31EB8600EAE70C /* FiltersViewController.swift in Sources */,
 				6B56C2B41D256E36004A84F9 /* Movie.swift in Sources */,
 				6B56C2B21D256D9E004A84F9 /* TMDBClient.swift in Sources */,
 				6B56C2AA1D250AF9004A84F9 /* MoviesViewController.swift in Sources */,
