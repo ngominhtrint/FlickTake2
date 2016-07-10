@@ -9,6 +9,7 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
+import MGSwipeTableCell
 
 enum MoviesViewMode {
     
@@ -289,6 +290,25 @@ extension MoviesViewController: UITableViewDataSource {
         let movie = filteredMovies![indexPath.row]
         cell.setData(movie)
         cell.setTheme()
+        cell.tag = indexPath.row
+        cell.backgroundColor = cell.isFavorited ? UIColor.brownColor() : UIColor.clearColor()
+        
+        //configure left buttons
+        cell.leftButtons = [MGSwipeButton(title: "Favorite", backgroundColor: UIColor.grayColor(), callback: {
+            (sender: MGSwipeTableCell!) -> Bool in
+                cell.isFavorited = !cell.isFavorited
+                cell.backgroundColor = cell.isFavorited ? UIColor.brownColor() : UIColor.clearColor()
+            return true
+        })]
+        cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
+        
+        //configure right buttons
+        cell.rightButtons = [MGSwipeButton(title: "Share", backgroundColor: UIColor.grayColor(), callback: {
+            (sender: MGSwipeTableCell!) -> Bool in
+            print("Share!")
+            return true
+        })]
+        cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
         
         return cell
     }
@@ -361,6 +381,7 @@ extension MoviesViewController: UISearchBarDelegate {
     }
 }
 
+// MARK: - Filters Delegate
 extension MoviesViewController: FiltersDelegate {
     
     func onAdultShowContent(target: FiltersViewController, state: String) {

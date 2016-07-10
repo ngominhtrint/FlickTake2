@@ -7,12 +7,15 @@
 //
 
 import UIKit
+import MGSwipeTableCell
 
-class MovieCell: UITableViewCell {
+class MovieCell: MGSwipeTableCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var posterView: UIImageView!
+    
+    var isFavorited: Bool = false
     
     override func awakeFromNib() {
         super.awakeFromNib()
