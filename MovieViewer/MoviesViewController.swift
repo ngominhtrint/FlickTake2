@@ -30,7 +30,12 @@ class MoviesViewController: UIViewController {
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var displayModeSegmented: UISegmentedControl!
     @IBOutlet weak var searchBarButton: UIBarButtonItem!
+    @IBOutlet weak var noResultView: UIView!
     
+    var includeAdult: String = "true"
+    var releaseYear: String = "2016"
+    var primaryYear: String = "2016"
+    var filterBarButton: UIBarButtonItem!
     var refreshControl: UIRefreshControl!
     var refreshControlGrid: UIRefreshControl!
     var searchBar = UISearchBar()
@@ -70,6 +75,7 @@ class MoviesViewController: UIViewController {
         setDisplayMode(displayMode)
         defaultNavigationTitleView = navigationItem.titleView
         setTheme()
+        filterBarButton = UIBarButtonItem(title: "Filters", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(onFiltersTap))
         
         // load data to view
         loadMovies()
@@ -106,20 +112,31 @@ class MoviesViewController: UIViewController {
         
         if(searchBarButton.title == "Search") {
             searchBarButton.title = "Cancel"
+            navigationItem.rightBarButtonItem = searchBarButton
+            navigationItem.leftBarButtonItem = filterBarButton
             navigationItem.titleView = searchBar
             searchBar.becomeFirstResponder()
         } else {
             searchBarButton.title = "Search"
             searchBar.text = ""
             navigationItem.titleView = defaultNavigationTitleView
+            navigationItem.leftBarButtonItem = nil
             filteredMovies = movies
             self.searchBar(searchBar, textDidChange: "")
             searchBar.resignFirstResponder()
         }
     }
     
+    func onFiltersTap() {
+        let filterVC = self.storyboard!.instantiateViewControllerWithIdentifier("FiltersViewController") as! FiltersViewController
+        filterVC.delegate = self
+        filterVC.includeAdult = includeAdult
+        filterVC.releaseYear = releaseYear
+        filterVC.primaryYear = primaryYear
+        self.navigationController!.pushViewController(filterVC, animated: true)
+    }
+    
     func hideError() {
-        
         errorView.hidden = true
     }
     
@@ -168,6 +185,35 @@ class MoviesViewController: UIViewController {
                 self.showError(error!)
                 return
             }
+            
+            self.movies = movies
+            self.reloadData()
+        })
+    }
+    
+    func searchMovies() {
+        
+        hideError()
+        // Display HUD right before the request is made
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        // make network request
+        TMDBClient.searchMovies(includeAdult, releaseYear: releaseYear, primaryYear: primaryYear, page: nil, language: nil, complete: {(movies: [Movie]?, error: NSError?) -> Void in
+        
+            // Hide HUD once the network request comes back (must be done on main UI thread)
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            // end refreshing
+            self.endRefreshing()
+            
+            guard error == nil else {
+                self.movies?.removeAll()
+                self.reloadData()
+                self.showError(error!)
+                return
+            }
+            
+            self.tableView.hidden = movies?.count == 0
+            self.collectionView.hidden = movies?.count == 0
+            self.noResultView.hidden = movies?.count != 0
             
             self.movies = movies
             self.reloadData()
@@ -246,7 +292,6 @@ extension MoviesViewController: UITableViewDataSource {
         
         return cell
     }
-    
 }
 
 extension MoviesViewController: UITableViewDelegate {
@@ -313,5 +358,33 @@ extension MoviesViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+}
+
+extension MoviesViewController: FiltersDelegate {
+    
+    func onAdultShowContent(target: FiltersViewController, state: String) {
+        print("Adult Show Content \(state)")
+        includeAdult = state
+        searchMovies()
+    }
+    
+    func onReleaseYearPick(target: FiltersViewController, value: String) {
+        print("Release year: \(value)")
+        releaseYear = value
+        searchMovies()
+    }
+    
+    func onPrimaryYearPick(target: FiltersViewController, value: String) {
+        print("Primary year: \(value)")
+        primaryYear = value
+        searchMovies()
+    }
+    
+    func onResetFilters(sender: FiltersViewController, adultShowContent: String, releaseYear: String, primaryYear: String) {
+        self.includeAdult = adultShowContent
+        self.releaseYear = releaseYear
+        self.primaryYear = primaryYear
+        searchMovies()
     }
 }
