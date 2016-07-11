@@ -20,7 +20,9 @@
 		6B6AA5271D281577001D9703 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6AA5261D281577001D9703 /* UIImageView.swift */; };
 		6B6AA52A1D282AD9001D9703 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6AA5291D282AD9001D9703 /* UIColor.swift */; };
 		CC02BBE5F15164B747E6BBB8 /* Pods_MovieViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A99C447AAF84FF8BDFEFC8 /* Pods_MovieViewer.framework */; };
+		EB4B5F4F1D3315890057EE18 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4B5F4E1D3315890057EE18 /* ShareViewController.swift */; };
 		EB56637F1D31EB8600EAE70C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */; };
+		EB5C12F51D333622007F5B25 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C12F41D333622007F5B25 /* Favorite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +42,9 @@
 		6B6AA5291D282AD9001D9703 /* UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		A22340D3199F1124145581D8 /* Pods-MovieViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.release.xcconfig"; sourceTree = "<group>"; };
 		E4A99C447AAF84FF8BDFEFC8 /* Pods_MovieViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB4B5F4E1D3315890057EE18 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		EB5C12F41D333622007F5B25 /* Favorite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
 		EE51B5A77DF7A2835CFE8CD1 /* Pods-MovieViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -97,6 +101,7 @@
 				6B56C2A91D250AF9004A84F9 /* MoviesViewController.swift */,
 				6B56C2AD1D2565EE004A84F9 /* MovieDetailViewController.swift */,
 				EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */,
+				EB4B5F4E1D3315890057EE18 /* ShareViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				6B56C2B31D256E36004A84F9 /* Movie.swift */,
+				EB5C12F41D333622007F5B25 /* Favorite.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -159,12 +165,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6B56C2A31D250182004A84F9 /* Build configuration list for PBXNativeTarget "MovieViewer" */;
 			buildPhases = (
-				CA3C6AB3428ABEBC76C024AF /* 📦 Check Pods Manifest.lock */,
+				CA3C6AB3428ABEBC76C024AF /* [CP] Check Pods Manifest.lock */,
 				6B56C28D1D250181004A84F9 /* Sources */,
 				6B56C28E1D250181004A84F9 /* Frameworks */,
 				6B56C28F1D250181004A84F9 /* Resources */,
-				FE34AB8F74596B30BF76B1B3 /* 📦 Embed Pods Frameworks */,
-				9DA3210FEB7AFA1CDBCB9A81 /* 📦 Copy Pods Resources */,
+				FE34AB8F74596B30BF76B1B3 /* [CP] Embed Pods Frameworks */,
+				9DA3210FEB7AFA1CDBCB9A81 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -223,14 +229,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9DA3210FEB7AFA1CDBCB9A81 /* 📦 Copy Pods Resources */ = {
+		9DA3210FEB7AFA1CDBCB9A81 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,14 +244,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CA3C6AB3428ABEBC76C024AF /* 📦 Check Pods Manifest.lock */ = {
+		CA3C6AB3428ABEBC76C024AF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,14 +259,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		FE34AB8F74596B30BF76B1B3 /* 📦 Embed Pods Frameworks */ = {
+		FE34AB8F74596B30BF76B1B3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,6 +282,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B5CB3B81D2669950007EC94 /* MovieCollectionCell.swift in Sources */,
+				EB4B5F4F1D3315890057EE18 /* ShareViewController.swift in Sources */,
 				6B6AA5271D281577001D9703 /* UIImageView.swift in Sources */,
 				6B56C2AE1D2565EE004A84F9 /* MovieDetailViewController.swift in Sources */,
 				6B56C2951D250181004A84F9 /* AppDelegate.swift in Sources */,
@@ -283,6 +290,7 @@
 				6B56C2B41D256E36004A84F9 /* Movie.swift in Sources */,
 				6B56C2B21D256D9E004A84F9 /* TMDBClient.swift in Sources */,
 				6B56C2AA1D250AF9004A84F9 /* MoviesViewController.swift in Sources */,
+				EB5C12F51D333622007F5B25 /* Favorite.swift in Sources */,
 				6B56C2AC1D251630004A84F9 /* MovieCell.swift in Sources */,
 				6B6AA52A1D282AD9001D9703 /* UIColor.swift in Sources */,
 			);
