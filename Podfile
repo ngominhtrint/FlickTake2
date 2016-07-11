@@ -10,5 +10,7 @@ target 'MovieViewer' do
   pod 'MBProgressHUD'
   pod 'MGSwipeTableCell'
   pod 'RealmSwift'
+  pod 'Firebase'
+  pod 'Firebase/Database'
 
 end
