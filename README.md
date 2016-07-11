@@ -36,7 +36,7 @@ The following **bonus task** features are implemented:
 
 - [x] Integrate MGSwipeTableCell to implement bi-directional swipe. Swipe left to favorite, and swipe right to share. Swipe left to favorite should trigger automatically upon completion of the swipe.
 - [ ] Firebase Branch: Implement a "Feed View", where you can see all the favorite actions happening in a TableView.
-- [ ] Sharing via Facebook, Twitter and More.
+- [x] Sharing via Facebook, Twitter and More.
 
 ## Video Walkthrough
 
