@@ -10,6 +10,7 @@ import Foundation
 
 struct Movie {
     
+    var id: Int?
     var title: String?
     var overview: String?
     var posterPath: String?
@@ -18,6 +19,7 @@ struct Movie {
     
     init(dictionary: NSDictionary) {
         
+        id = dictionary["id"] as? Int
         title = dictionary["title"] as? String ?? ""
         overview = dictionary["overview"] as? String ?? ""
         posterPath = dictionary["poster_path"] as? String ?? nil

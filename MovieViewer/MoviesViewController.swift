@@ -10,6 +10,7 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 import MGSwipeTableCell
+import RealmSwift
 
 enum MoviesViewMode {
     
@@ -33,6 +34,7 @@ class MoviesViewController: UIViewController {
     @IBOutlet weak var searchBarButton: UIBarButtonItem!
     @IBOutlet weak var noResultView: UIView!
     
+    let realm = try! Realm()
     var includeAdult: String = "true"
     var releaseYear: String = "2016"
     var primaryYear: String = "2016"
@@ -187,6 +189,14 @@ class MoviesViewController: UIViewController {
                 return
             }
             
+            // retrieve all favorites
+            let favorites = self.realm.objects(Favorite.self)
+            if favorites.count == 0 {
+                for movie in movies! {
+                    self.addAndUpdateFavoriteRecord(movie.id!, isFavorite: false)
+                }
+            }
+            
             self.movies = movies
             self.reloadData()
         })
@@ -290,16 +300,21 @@ extension MoviesViewController: UITableViewDataSource {
         
         cell.setData(movie)
         cell.setTheme()
-
-        cell.backgroundColor = filteredMovies![indexPath.row].isFavorited ? UIColor.brownColor() : UIColor.clearColor()
-        let favoriteTitle = filteredMovies![indexPath.row].isFavorited ? "Unfavorite" : "Favorite"
+        
+        // retrieve all favorites by id
+        let favorites = realm.objects(Favorite.self).filter("id = \(movie.id!)")
+        
+        cell.backgroundColor = favorites[0].isFavorite ? UIColor.brownColor() : UIColor.clearColor()
+        let favoriteTitle = favorites[0].isFavorite ? "Unfavorite" : "Favorite"
         
         //configure left buttons as Favorite
         cell.leftButtons = [MGSwipeButton(title: favoriteTitle, backgroundColor: UIColor.grayColor(), callback: {
             (sender: MGSwipeTableCell!) -> Bool in
-                self.filteredMovies![indexPath.row].isFavorited = !self.filteredMovies![indexPath.row].isFavorited
-                cell.backgroundColor = self.filteredMovies![indexPath.row].isFavorited ? UIColor.brownColor() : UIColor.clearColor()
-                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+            print(Realm.Configuration.defaultConfiguration.fileURL!)
+        
+            self.addAndUpdateFavoriteRecord(movie.id!, isFavorite: !favorites[0].isFavorite)
+            cell.backgroundColor = favorites[0].isFavorite ? UIColor.brownColor() : UIColor.clearColor()
+            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
             return true
         })]
         cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
@@ -307,13 +322,26 @@ extension MoviesViewController: UITableViewDataSource {
         //configure right buttons as Share
         cell.rightButtons = [MGSwipeButton(title: "Share", backgroundColor: UIColor.grayColor(), callback: {
             (sender: MGSwipeTableCell!) -> Bool in
-            let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("ShareViewController") as! ShareViewController
-            self.navigationController?.pushViewController(shareVC, animated: true)
+            self.navigateShareViewController()
             return true
         })]
         cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
         
         return cell
+    }
+    
+    func addAndUpdateFavoriteRecord(id: Int, isFavorite: Bool) {
+        let favorite = Favorite()
+        favorite.id = id
+        favorite.isFavorite = isFavorite
+        try! self.realm.write {
+            self.realm.add(favorite, update: true)
+        }
+    }
+    
+    func navigateShareViewController() {
+        let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("ShareViewController") as! ShareViewController
+        self.navigationController?.pushViewController(shareVC, animated: true)
     }
 }
 
