@@ -486,20 +486,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="roundedRect" placeholder="Share something ..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FK9-9m-GJV">
-                                <rect key="frame" x="8" y="72" width="304" height="200"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Hello, this is a sample post message!" translatesAutoresizingMaskIntoConstraints="NO" id="RLj-KL-4Mf">
+                                <rect key="frame" x="8" y="72" width="304" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="jZ3-Ro-OPH"/>
+                                    <constraint firstAttribute="height" constant="128" id="z70-RF-bdf"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="FK9-9m-GJV" secondAttribute="trailing" constant="8" id="4SI-C3-xoi"/>
-                            <constraint firstItem="FK9-9m-GJV" firstAttribute="top" secondItem="qQS-Qg-Olu" secondAttribute="bottom" constant="8" id="An2-QL-azg"/>
-                            <constraint firstItem="FK9-9m-GJV" firstAttribute="leading" secondItem="g4B-xX-bZW" secondAttribute="leading" constant="8" id="nhY-Jv-quE"/>
+                            <constraint firstItem="RLj-KL-4Mf" firstAttribute="top" secondItem="qQS-Qg-Olu" secondAttribute="bottom" constant="8" id="9ET-5B-FfL"/>
+                            <constraint firstItem="RLj-KL-4Mf" firstAttribute="leading" secondItem="g4B-xX-bZW" secondAttribute="leading" constant="8" id="Hod-EL-mVG"/>
+                            <constraint firstAttribute="trailing" secondItem="RLj-KL-4Mf" secondAttribute="trailing" constant="8" id="v9W-C7-EE2"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Share" id="A1l-WO-yKw">
@@ -510,7 +511,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="shareTextField" destination="FK9-9m-GJV" id="FES-6x-uc2"/>
+                        <outlet property="shareTextView" destination="RLj-KL-4Mf" id="bWv-Rd-r3a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hAl-85-B90" userLabel="First Responder" sceneMemberID="firstResponder"/>

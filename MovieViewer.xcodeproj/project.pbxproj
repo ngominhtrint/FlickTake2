@@ -22,6 +22,7 @@
 		CC02BBE5F15164B747E6BBB8 /* Pods_MovieViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A99C447AAF84FF8BDFEFC8 /* Pods_MovieViewer.framework */; };
 		EB4B5F4F1D3315890057EE18 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4B5F4E1D3315890057EE18 /* ShareViewController.swift */; };
 		EB56637F1D31EB8600EAE70C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */; };
+		EBAF967F1D33888E0054960A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAF967E1D33888E0054960A /* Social.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 		E4A99C447AAF84FF8BDFEFC8 /* Pods_MovieViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB4B5F4E1D3315890057EE18 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		EBAF967E1D33888E0054960A /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		EE51B5A77DF7A2835CFE8CD1 /* Pods-MovieViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -51,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBAF967F1D33888E0054960A /* Social.framework in Frameworks */,
 				CC02BBE5F15164B747E6BBB8 /* Pods_MovieViewer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -141,6 +144,7 @@
 		7A02AB85B9AFDD4C83C7B2B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EBAF967E1D33888E0054960A /* Social.framework */,
 				E4A99C447AAF84FF8BDFEFC8 /* Pods_MovieViewer.framework */,
 			);
 			name = Frameworks;
