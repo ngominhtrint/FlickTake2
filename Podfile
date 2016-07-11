@@ -9,5 +9,8 @@ target 'MovieViewer' do
   pod 'AFNetworking'
   pod 'MBProgressHUD'
   pod 'MGSwipeTableCell'
+  pod 'RealmSwift'
+  pod 'Firebase'
+  pod 'Firebase/Database'
 
 end

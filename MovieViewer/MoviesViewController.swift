@@ -10,6 +10,7 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 import MGSwipeTableCell
+import FirebaseDatabase
 
 enum MoviesViewMode {
     
@@ -59,11 +60,14 @@ class MoviesViewController: UIViewController {
         }
     }
     var displayMode = DisplayMode.Grid
+    var ref: FIRDatabaseReference?
     
     // Called after the controller's view is loaded into memory
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        ref = FIRDatabase.database().reference()
+        
         // set delegate
         tableView.dataSource = self
         tableView.delegate = self
@@ -187,6 +191,15 @@ class MoviesViewController: UIViewController {
                 return
             }
             
+            // retrieve all favorites
+            self.ref!.child("favorite").observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) in
+                if snapshot.value is NSNull {
+                    for movie in movies! {
+                        self.ref?.child("favorite/\(movie.id!)/isFavorite").setValue(false)
+                    }
+                }
+            })
+            
             self.movies = movies
             self.reloadData()
         })
@@ -290,30 +303,42 @@ extension MoviesViewController: UITableViewDataSource {
         
         cell.setData(movie)
         cell.setTheme()
-
-        cell.backgroundColor = filteredMovies![indexPath.row].isFavorited ? UIColor.brownColor() : UIColor.clearColor()
-        let favoriteTitle = filteredMovies![indexPath.row].isFavorited ? "Unfavorite" : "Favorite"
         
-        //configure left buttons as Favorite
-        cell.leftButtons = [MGSwipeButton(title: favoriteTitle, backgroundColor: UIColor.grayColor(), callback: {
-            (sender: MGSwipeTableCell!) -> Bool in
-                self.filteredMovies![indexPath.row].isFavorited = !self.filteredMovies![indexPath.row].isFavorited
-                cell.backgroundColor = self.filteredMovies![indexPath.row].isFavorited ? UIColor.brownColor() : UIColor.clearColor()
+        // retrieve all favorites by id
+        self.ref!.child("favorite/\(movie.id!)").observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) in
+            var favorite = snapshot.value!["isFavorite"] as! Bool
+            cell.backgroundColor = favorite ? UIColor.brownColor() : UIColor.clearColor()
+            let favoriteTitle = favorite ? "Unfavorite" : "Favorite"
+                
+            //configure left buttons as Favorite
+            cell.leftButtons = [MGSwipeButton(title: favoriteTitle, backgroundColor: UIColor.grayColor(), callback: {
+                (sender: MGSwipeTableCell!) -> Bool in
+                    
+                favorite = !favorite
+                self.ref?.child("favorite/\(movie.id!)/isFavorite").setValue(favorite)
+                cell.backgroundColor = favorite ? UIColor.brownColor() : UIColor.clearColor()
                 tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
-            return true
-        })]
-        cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
+                return true
+            })]
+            cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
+                
+            return
+        })
         
         //configure right buttons as Share
         cell.rightButtons = [MGSwipeButton(title: "Share", backgroundColor: UIColor.grayColor(), callback: {
             (sender: MGSwipeTableCell!) -> Bool in
-            let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("ShareViewController") as! ShareViewController
-            self.navigationController?.pushViewController(shareVC, animated: true)
+            self.navigateShareViewController()
             return true
         })]
         cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
         
         return cell
+    }
+    
+    func navigateShareViewController() {
+        let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("ShareViewController") as! ShareViewController
+        self.navigationController?.pushViewController(shareVC, animated: true)
     }
 }
 
