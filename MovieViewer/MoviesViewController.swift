@@ -111,7 +111,7 @@ class MoviesViewController: UIViewController {
     
     @IBAction func onTapSearchButton(sender: AnyObject) {
         
-        if(searchBarButton.title == "Search") {
+        if (searchBarButton.title == "Search") {
             searchBarButton.title = "Cancel"
             navigationItem.rightBarButtonItem = searchBarButton
             navigationItem.leftBarButtonItem = filterBarButton
