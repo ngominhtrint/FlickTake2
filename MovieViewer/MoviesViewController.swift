@@ -9,6 +9,7 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
+import MGSwipeTableCell
 
 enum MoviesViewMode {
     
@@ -42,7 +43,7 @@ class MoviesViewController: UIViewController {
     var defaultNavigationTitleView: UIView?
     var movies: [Movie]? {
         didSet {
-            
+        
             filteredMovies = movies
         }
     }
@@ -278,7 +279,6 @@ extension MoviesViewController: UITableViewDataSource {
     
     // Tells the data source to return the number of rows in a given section of a table view.
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
         return filteredMovies?.count ?? 0
     }
     
@@ -287,8 +287,31 @@ extension MoviesViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         let movie = filteredMovies![indexPath.row]
+        
         cell.setData(movie)
         cell.setTheme()
+
+        cell.backgroundColor = filteredMovies![indexPath.row].isFavorited ? UIColor.brownColor() : UIColor.clearColor()
+        let favoriteTitle = filteredMovies![indexPath.row].isFavorited ? "Unfavorite" : "Favorite"
+        
+        //configure left buttons as Favorite
+        cell.leftButtons = [MGSwipeButton(title: favoriteTitle, backgroundColor: UIColor.grayColor(), callback: {
+            (sender: MGSwipeTableCell!) -> Bool in
+                self.filteredMovies![indexPath.row].isFavorited = !self.filteredMovies![indexPath.row].isFavorited
+                cell.backgroundColor = self.filteredMovies![indexPath.row].isFavorited ? UIColor.brownColor() : UIColor.clearColor()
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+            return true
+        })]
+        cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
+        
+        //configure right buttons as Share
+        cell.rightButtons = [MGSwipeButton(title: "Share", backgroundColor: UIColor.grayColor(), callback: {
+            (sender: MGSwipeTableCell!) -> Bool in
+            let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("ShareViewController") as! ShareViewController
+            self.navigationController?.pushViewController(shareVC, animated: true)
+            return true
+        })]
+        cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
         
         return cell
     }
@@ -361,6 +384,7 @@ extension MoviesViewController: UISearchBarDelegate {
     }
 }
 
+// MARK: - Filters Delegate
 extension MoviesViewController: FiltersDelegate {
     
     func onAdultShowContent(target: FiltersViewController, state: String) {
