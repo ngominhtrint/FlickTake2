@@ -24,6 +24,7 @@
 		EB56637F1D31EB8600EAE70C /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */; };
 		EB57C5621D33525900C085A1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EB57C5611D33525900C085A1 /* GoogleService-Info.plist */; };
 		EB5C12F51D333622007F5B25 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5C12F41D333622007F5B25 /* Favorite.swift */; };
+		EBAF967F1D33888E0054960A /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EBAF967E1D33888E0054960A /* Social.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		EB56637E1D31EB8600EAE70C /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		EB57C5611D33525900C085A1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		EB5C12F41D333622007F5B25 /* Favorite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
+		EBAF967E1D33888E0054960A /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		EE51B5A77DF7A2835CFE8CD1 /* Pods-MovieViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBAF967F1D33888E0054960A /* Social.framework in Frameworks */,
 				CC02BBE5F15164B747E6BBB8 /* Pods_MovieViewer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,6 +150,7 @@
 		7A02AB85B9AFDD4C83C7B2B0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EBAF967E1D33888E0054960A /* Social.framework */,
 				E4A99C447AAF84FF8BDFEFC8 /* Pods_MovieViewer.framework */,
 			);
 			name = Frameworks;
