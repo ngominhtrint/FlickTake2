@@ -15,8 +15,6 @@ class MovieCell: MGSwipeTableCell {
     @IBOutlet weak var overviewLabel: UILabel!
     @IBOutlet weak var posterView: UIImageView!
     
-    var isFavorited: Bool = false
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
