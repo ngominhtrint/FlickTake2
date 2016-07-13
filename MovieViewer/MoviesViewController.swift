@@ -11,6 +11,7 @@ import AFNetworking
 import MBProgressHUD
 import MGSwipeTableCell
 import FirebaseDatabase
+import Social
 
 enum MoviesViewMode {
     
@@ -328,7 +329,7 @@ extension MoviesViewController: UITableViewDataSource {
         //configure right buttons as Share
         cell.rightButtons = [MGSwipeButton(title: "Share", backgroundColor: UIColor.grayColor(), callback: {
             (sender: MGSwipeTableCell!) -> Bool in
-            self.navigateShareViewController()
+            self.shareSocial(movie)
             return true
         })]
         cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
@@ -336,9 +337,89 @@ extension MoviesViewController: UITableViewDataSource {
         return cell
     }
     
+    func shareSocial(movie: Movie) {
+        initShareMenu(movie)
+    }
+    
     func navigateShareViewController() {
         let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("ShareViewController") as! ShareViewController
         self.navigationController?.pushViewController(shareVC, animated: true)
+    }
+}
+
+// MARK: - Share social
+extension MoviesViewController {
+    func initShareMenu(movie: Movie) {
+        
+        let shareMenu = UIAlertController(title: "Share your note", message: nil, preferredStyle: .ActionSheet)
+        
+        let shareOnTwitter = UIAlertAction(title: "Share on Twitter", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.shareViaTwitter(movie)
+        })
+        let shareOnFacebook = UIAlertAction(title: "Share on Facebook", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.shareViaFacebook(movie)
+        })
+        let moreAction = UIAlertAction(title: "More", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.shareViaMore(movie)
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+        })
+        
+        shareMenu.addAction(shareOnTwitter)
+        shareMenu.addAction(shareOnFacebook)
+        shareMenu.addAction(moreAction)
+        shareMenu.addAction(cancelAction)
+        
+        self.presentViewController(shareMenu, animated: true, completion: nil)
+    }
+    
+    func shareViaTwitter(movie: Movie) {
+        // Check if sharing to Twitter is possible.
+        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+            // Initialize the default view controller for sharing the post.
+            let twitterComposeVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+            
+            // Set the note text as the default post message.
+            if movie.overview!.characters.count <= 140 {
+                twitterComposeVC.setInitialText("\(movie.overview!)")
+            } else {
+                let index = movie.overview!.startIndex.advancedBy(140)
+                let subText = movie.overview!.substringToIndex(index)
+                twitterComposeVC.setInitialText("\(subText)")
+            }
+        }
+        else {
+            self.showAlertMessage("You are not logged in to your Twitter account.")
+        }
+    }
+    
+    func shareViaFacebook(movie: Movie) {
+        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
+            let facebookComposeVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            facebookComposeVC.setInitialText("\(movie.overview!)")
+            
+            self.presentViewController(facebookComposeVC, animated: true, completion: nil)
+        } else {
+            self.showAlertMessage("You are not connected to your Facebook account.")
+        }
+    }
+    
+    func shareViaMore(movie: Movie) {
+        let activityViewController = UIActivityViewController(activityItems: [movie.overview!], applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivityTypeMail]
+        
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
+    
+    func showAlertMessage(message: String!) {
+        let alertController = UIAlertController(title: "EasyShare", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+        presentViewController(alertController, animated: true, completion: nil)
     }
 }
 
