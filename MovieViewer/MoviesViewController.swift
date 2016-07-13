@@ -9,6 +9,9 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
+import MGSwipeTableCell
+import FirebaseDatabase
+import Social
 
 enum MoviesViewMode {
     
@@ -42,7 +45,7 @@ class MoviesViewController: UIViewController {
     var defaultNavigationTitleView: UIView?
     var movies: [Movie]? {
         didSet {
-            
+        
             filteredMovies = movies
         }
     }
@@ -58,11 +61,14 @@ class MoviesViewController: UIViewController {
         }
     }
     var displayMode = DisplayMode.Grid
+    var ref: FIRDatabaseReference?
     
     // Called after the controller's view is loaded into memory
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        ref = FIRDatabase.database().reference()
+        
         // set delegate
         tableView.dataSource = self
         tableView.delegate = self
@@ -186,6 +192,15 @@ class MoviesViewController: UIViewController {
                 return
             }
             
+            // retrieve all favorites
+            self.ref!.child("favorite").observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) in
+                if snapshot.value is NSNull {
+                    for movie in movies! {
+                        self.ref?.child("favorite/\(movie.id!)/isFavorite").setValue(false)
+                    }
+                }
+            })
+            
             self.movies = movies
             self.reloadData()
         })
@@ -278,7 +293,6 @@ extension MoviesViewController: UITableViewDataSource {
     
     // Tells the data source to return the number of rows in a given section of a table view.
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    
         return filteredMovies?.count ?? 0
     }
     
@@ -287,10 +301,125 @@ extension MoviesViewController: UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         let movie = filteredMovies![indexPath.row]
+        
         cell.setData(movie)
         cell.setTheme()
         
+        // retrieve all favorites by id
+        self.ref!.child("favorite/\(movie.id!)").observeEventType(FIRDataEventType.Value, withBlock: { (snapshot) in
+            var favorite = snapshot.value!["isFavorite"] as! Bool
+            cell.backgroundColor = favorite ? UIColor.brownColor() : UIColor.clearColor()
+            let favoriteTitle = favorite ? "Unfavorite" : "Favorite"
+                
+            //configure left buttons as Favorite
+            cell.leftButtons = [MGSwipeButton(title: favoriteTitle, backgroundColor: UIColor.grayColor(), callback: {
+                (sender: MGSwipeTableCell!) -> Bool in
+                    
+                favorite = !favorite
+                self.ref?.child("favorite/\(movie.id!)/isFavorite").setValue(favorite)
+                cell.backgroundColor = favorite ? UIColor.brownColor() : UIColor.clearColor()
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.None)
+                return true
+            })]
+            cell.leftSwipeSettings.transition = MGSwipeTransition.Rotate3D
+                
+            return
+        })
+        
+        //configure right buttons as Share
+        cell.rightButtons = [MGSwipeButton(title: "Share", backgroundColor: UIColor.grayColor(), callback: {
+            (sender: MGSwipeTableCell!) -> Bool in
+            self.shareSocial(movie)
+            return true
+        })]
+        cell.rightSwipeSettings.transition = MGSwipeTransition.Rotate3D
+        
         return cell
+    }
+    
+    func shareSocial(movie: Movie) {
+        initShareMenu(movie)
+    }
+    
+    func navigateShareViewController() {
+        let shareVC = self.storyboard?.instantiateViewControllerWithIdentifier("ShareViewController") as! ShareViewController
+        self.navigationController?.pushViewController(shareVC, animated: true)
+    }
+}
+
+// MARK: - Share social
+extension MoviesViewController {
+    func initShareMenu(movie: Movie) {
+        
+        let shareMenu = UIAlertController(title: "Share your note", message: nil, preferredStyle: .ActionSheet)
+        
+        let shareOnTwitter = UIAlertAction(title: "Share on Twitter", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.shareViaTwitter(movie)
+        })
+        let shareOnFacebook = UIAlertAction(title: "Share on Facebook", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.shareViaFacebook(movie)
+        })
+        let moreAction = UIAlertAction(title: "More", style: .Default, handler: {
+            (alert: UIAlertAction!) -> Void in
+            self.shareViaMore(movie)
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+            
+        })
+        
+        shareMenu.addAction(shareOnTwitter)
+        shareMenu.addAction(shareOnFacebook)
+        shareMenu.addAction(moreAction)
+        shareMenu.addAction(cancelAction)
+        
+        self.presentViewController(shareMenu, animated: true, completion: nil)
+    }
+    
+    func shareViaTwitter(movie: Movie) {
+        // Check if sharing to Twitter is possible.
+        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) {
+            // Initialize the default view controller for sharing the post.
+            let twitterComposeVC = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+            
+            // Set the note text as the default post message.
+            if movie.overview!.characters.count <= 140 {
+                twitterComposeVC.setInitialText("\(movie.overview!)")
+            } else {
+                let index = movie.overview!.startIndex.advancedBy(140)
+                let subText = movie.overview!.substringToIndex(index)
+                twitterComposeVC.setInitialText("\(subText)")
+            }
+        }
+        else {
+            self.showAlertMessage("You are not logged in to your Twitter account.")
+        }
+    }
+    
+    func shareViaFacebook(movie: Movie) {
+        if SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook) {
+            let facebookComposeVC = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            facebookComposeVC.setInitialText("\(movie.overview!)")
+            
+            self.presentViewController(facebookComposeVC, animated: true, completion: nil)
+        } else {
+            self.showAlertMessage("You are not connected to your Facebook account.")
+        }
+    }
+    
+    func shareViaMore(movie: Movie) {
+        let activityViewController = UIActivityViewController(activityItems: [movie.overview!], applicationActivities: nil)
+        activityViewController.excludedActivityTypes = [UIActivityTypeMail]
+        
+        self.presentViewController(activityViewController, animated: true, completion: nil)
+    }
+    
+    func showAlertMessage(message: String!) {
+        let alertController = UIAlertController(title: "EasyShare", message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+        presentViewController(alertController, animated: true, completion: nil)
     }
 }
 
@@ -361,6 +490,7 @@ extension MoviesViewController: UISearchBarDelegate {
     }
 }
 
+// MARK: - Filters Delegate
 extension MoviesViewController: FiltersDelegate {
     
     func onAdultShowContent(target: FiltersViewController, state: String) {

@@ -36,7 +36,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gRH-uL-sLG">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="150" id="IU5-Wt-QQF" customClass="MovieCell" customModule="MovieViewer" customModuleProvider="target">
@@ -153,7 +153,7 @@
                             <constraint firstItem="gRH-uL-sLG" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Lb6-JA-9AB"/>
                             <constraint firstItem="D4f-7u-WKf" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Leu-cX-KGa"/>
                             <constraint firstItem="D4f-7u-WKf" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="NHA-N9-w9m"/>
-                            <constraint firstItem="gRH-uL-sLG" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Poe-rZ-Ht7"/>
+                            <constraint firstItem="gRH-uL-sLG" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="64" id="Poe-rZ-Ht7"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="DlX-42-xy5" secondAttribute="bottom" id="Qh4-R7-qEw"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="gCF-as-KWj" secondAttribute="bottom" id="hTo-1K-1av"/>
                             <constraint firstItem="gCF-as-KWj" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="qyt-Rq-Gh7"/>
@@ -474,6 +474,50 @@
             </objects>
             <point key="canvasLocation" x="2299" y="659"/>
         </scene>
+        <!--Share-->
+        <scene sceneID="QL5-SU-yHO">
+            <objects>
+                <viewController storyboardIdentifier="ShareViewController" id="aHg-jC-98y" customClass="ShareViewController" customModule="MovieViewer" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qQS-Qg-Olu"/>
+                        <viewControllerLayoutGuide type="bottom" id="UdV-6V-v9F"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="g4B-xX-bZW">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Hello, this is a sample post message!" translatesAutoresizingMaskIntoConstraints="NO" id="RLj-KL-4Mf">
+                                <rect key="frame" x="8" y="72" width="304" height="128"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="z70-RF-bdf"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="RLj-KL-4Mf" firstAttribute="top" secondItem="qQS-Qg-Olu" secondAttribute="bottom" constant="8" id="9ET-5B-FfL"/>
+                            <constraint firstItem="RLj-KL-4Mf" firstAttribute="leading" secondItem="g4B-xX-bZW" secondAttribute="leading" constant="8" id="Hod-EL-mVG"/>
+                            <constraint firstAttribute="trailing" secondItem="RLj-KL-4Mf" secondAttribute="trailing" constant="8" id="v9W-C7-EE2"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Share" id="A1l-WO-yKw">
+                        <barButtonItem key="rightBarButtonItem" title="Post" id="uVp-hK-pv4">
+                            <connections>
+                                <action selector="onPostTap:" destination="aHg-jC-98y" id="y4x-4d-MHV"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="shareTextView" destination="RLj-KL-4Mf" id="bWv-Rd-r3a"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hAl-85-B90" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3137" y="659"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="EGB-bb-W41">
             <objects>
@@ -509,6 +553,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WZG-Ul-QgR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1905" y="659"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Cmh-hf-Dy3">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9C1-MN-GLX" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="HSw-mL-JEh">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="aHg-jC-98y" kind="relationship" relationship="rootViewController" id="lab-zT-vLm"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="szO-p1-MRq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2740" y="659"/>
         </scene>
     </scenes>
     <resources>

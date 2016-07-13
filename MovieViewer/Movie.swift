@@ -10,13 +10,16 @@ import Foundation
 
 struct Movie {
     
+    var id: Int?
     var title: String?
     var overview: String?
     var posterPath: String?
     var releaseDate: String?
+    var isFavorited: Bool = false
     
     init(dictionary: NSDictionary) {
         
+        id = dictionary["id"] as? Int
         title = dictionary["title"] as? String ?? ""
         overview = dictionary["overview"] as? String ?? ""
         posterPath = dictionary["poster_path"] as? String ?? nil
