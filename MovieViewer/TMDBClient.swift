@@ -19,7 +19,7 @@ struct TMDBClient {
     static let BaseImageUrl = "http://image.tmdb.org/t/p/"
     static let MovieNowPlaying = "http://api.themoviedb.org/3/movie/now_playing?api_key=\(ApiKey)"
     static let MovieTopRated = "http://api.themoviedb.org/3/movie/top_rated?api_key=\(ApiKey)"
-    static let MovieSearch = "http://api.themoviedb.org/3/search/movie?api_key=\(ApiKey)&query[include_adult=%@&year=%@&primary_release_year=%@]"
+    static let MovieSearch = "http://api.themoviedb.org/3/search/movie?api_key=\(ApiKey)&query=%@&include_adult=%@&year=%@&primary_release_year=%@"
     
     // fetch movies from input url
     static func fetchMovies(urlString: String, page: Int?, language: String?, complete: ((movies: [Movie]?, error: NSError?) -> Void) ) {
@@ -58,9 +58,9 @@ struct TMDBClient {
     }
     
     // search movies
-    static func searchMovies(includeAdult: String, releaseYear: String, primaryYear: String, page: Int?, language: String?, complete: ((movies: [Movie]?, error: NSError?) -> Void) ) {
+    static func searchMovies(name: String, includeAdult: String, releaseYear: String, primaryYear: String, page: Int?, language: String?, complete: ((movies: [Movie]?, error: NSError?) -> Void) ) {
         
-        let urlString = String(format: MovieSearch, includeAdult, releaseYear, primaryYear)
+        let urlString = String(format: MovieSearch, name, includeAdult, releaseYear, primaryYear)
         let url = NSURL(string: urlString)!
         let request = NSURLRequest(URL: url)
         let session = NSURLSession(

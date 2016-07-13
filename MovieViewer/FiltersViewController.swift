@@ -10,9 +10,9 @@ import UIKit
 
 @objc protocol FiltersDelegate: class {
     optional func onAdultShowContent(sender: FiltersViewController, state: String)
-    optional func onReleaseYearPick(sender: FiltersViewController, value: String)
-    optional func onPrimaryYearPick(sender: FiltersViewController, value: String)
-    optional func onResetFilters(sender: FiltersViewController, adultShowContent: String, releaseYear: String, primaryYear: String)
+    optional func onReleaseYearPick(sender: FiltersViewController, row: Int)
+    optional func onPrimaryYearPick(sender: FiltersViewController, row: Int)
+    optional func onResetFilters(sender: FiltersViewController, adultShowContent: String, releaseYearRow: Int, primaryYearRow: Int)
 }
 
 class FiltersViewController: UITableViewController {
@@ -23,8 +23,9 @@ class FiltersViewController: UITableViewController {
     @IBOutlet weak var showAdultContentSwitch: UISwitch!
     
     var includeAdult: String?
-    var releaseYear: String?
-    var primaryYear: String?
+    var year = [String]()
+    var releaseYearRow:Int = 0
+    var primaryYearRow:Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,13 +34,21 @@ class FiltersViewController: UITableViewController {
         releaseYearPicker.delegate = self
         primaryYearPicker.delegate = self
         
+        initYearArray()
         initFilters()
     }
 
+    func initYearArray() {
+        year.append("Any")
+        for index in 0...100 {
+            year.append(String(1950 + index))
+        }
+    }
+    
     func initFilters() {
         showAdultContentSwitch.setOn(NSString(string:includeAdult!).boolValue, animated: true)
-        releaseYearPicker.selectRow(Int(releaseYear!)! - 1950, inComponent: 0, animated: true)
-        primaryYearPicker.selectRow(Int(primaryYear!)! - 1950, inComponent: 0, animated: true)
+        releaseYearPicker.selectRow(releaseYearRow, inComponent: 0, animated: true)
+        primaryYearPicker.selectRow(primaryYearRow, inComponent: 0, animated: true)
     }
     
     override func didReceiveMemoryWarning() {
@@ -47,13 +56,14 @@ class FiltersViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
     @IBAction func onResetTap(sender: UIBarButtonItem) {
         includeAdult = "true"
-        releaseYear = "2016"
-        primaryYear = "2016"
+        releaseYearRow = 0
+        primaryYearRow = 0
         
+        delegate?.onResetFilters!(self, adultShowContent: includeAdult!, releaseYearRow: releaseYearRow, primaryYearRow: primaryYearRow)
         initFilters()
-        delegate?.onResetFilters!(self, adultShowContent: includeAdult!, releaseYear: releaseYear!, primaryYear: primaryYear!)
     }
     
     @IBAction func onSwitchChange(sender: UISwitch) {
@@ -76,18 +86,18 @@ class FiltersViewController: UITableViewController {
 extension FiltersViewController: UIPickerViewDelegate {
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return 100
+        return year.count
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return String(1950 + row);
+        return year[row];
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == releaseYearPicker {
-            delegate?.onReleaseYearPick!(self, value: String(1950 + row))
+            delegate?.onReleaseYearPick!(self, row: row)
         } else if pickerView == primaryYearPicker {
-            delegate?.onPrimaryYearPick!(self, value: String(1950 + row))
+            delegate?.onPrimaryYearPick!(self, row: row)
         }
     }
 }
